@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    
+    <div class="mb-4">
+        <h2 class="fw-light text-uppercase">
+            Resultados para: <span class="fw-bold">"{{ query }}"</span>
+        </h2>
+        <p class="text-muted">{{ produtos|length }} produtos encontrados.</p>
+    </div>
+
+    {% if not produtos %}
+        <div class="alert alert-light text-center py-5 border">
+            <h4>😔 Nenhum produto encontrado.</h4>
+            <p>Tente pesquisar por outro termo ou verifique a ortografia.</p>
+            <a href="{% url 'home' %}" class="btn btn-dark mt-3">Ver Todos os Produtos</a>
+        </div>
+    {% else %}
+        <div class="row">
+            {% for produto in produtos %}
+            <div class="col-lg-3 col-md-4 mb-4">
+                <a href="{% url 'detalhe_produto' produto.id %}" class="card h-100 text-decoration-none border-0 shadow-sm">
+                    <div class="card-img-top d-flex align-items-center justify-content-center text-secondary position-relative">
+                        {% if produto.imagem %}
+                            <img src="{{ produto.imagem.url }}" class="card-img-top" alt="{{ produto.nome }}" style="height: 250px; object-fit: contain; padding: 10px;">
+                        {% else %}
+                            <div class="d-flex align-items-center justify-content-center bg-light" style="height: 250px; width: 100%;">
+                                <span>Sem Imagem</span>
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="card-body text-center p-2">
+                        <p class="card-text text-muted mb-1 small">
+                            {{ produto.descricao|truncatewords:2 }}
+                        </p>
+                        <h6 class="card-title text-dark fw-normal mb-1">{{ produto.nome }}</h6>
+                        <span class="h6 mb-0 text-dark fw-bold">€ {{ produto.preco }}</span>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

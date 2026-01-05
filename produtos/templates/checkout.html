@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Finalizar Encomenda</h2>
+
+    
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card p-4">
+                <h4>📦 Dados de Envio</h4>
+                <form action="{% url 'processar_checkout' %}" method="POST">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Nome Completo</label>
+                        <input type="text" class="form-control" value="{{ user.get_full_name|default:user.username }}" readonly>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Morada (Rua, Nº, Andar)</label>
+                        <input type="text" name="endereco" class="form-control" required placeholder="Ex: Rua das Flores, 12, 2º Esq">
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Cidade</label>
+                            <input type="text" name="cidade" class="form-control" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Código Postal</label>
+                            <input type="text" name="codigo_postal" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Telemóvel</label>
+                        <input type="text" name="telemovel" class="form-control" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-dark btn-lg w-100 mt-3">Ir para Pagamento</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card shadow mb-4">
+    <div class="card-body">
+        <h5 class="card-title">Tens um cupão?</h5>
+        <form action="{% url 'aplicar_cupom' %}" method="POST" class="d-flex gap-2">
+            {% csrf_token %}
+            <input type="text" name="codigo" class="form-control" placeholder="Ex: VERAO2025" value="{{ cupom_codigo|default:'' }}">
+            <button type="submit" class="btn btn-dark">Aplicar</button>
+        </form>
+    </div>
+</div>
+
+        <ul class="list-group mb-3">
+    <li class="list-group-item d-flex justify-content-between">
+        <span>Subtotal (EUR)</span>
+        <strong>€ {{ subtotal|floatformat:2 }}</strong>
+    </li>
+
+    {% if desconto > 0 %}
+    <li class="list-group-item d-flex justify-content-between bg-light text-success">
+        <span>Desconto ({{ cupom_codigo }})</span>
+        <strong>- € {{ desconto|floatformat:2 }}</strong>
+    </li>
+    {% endif %}
+
+    <li class="list-group-item d-flex justify-content-between">
+        <span>Envio</span>
+        <strong>€ {{ custo_envio|floatformat:2 }}</strong>
+    </li>
+    <li class="list-group-item d-flex justify-content-between bg-light">
+        <span>Total a Pagar</span>
+        <strong>€ {{ total_final|floatformat:2 }}</strong>
+    </li>
+</ul>
+</div>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4 text-center text-uppercase fw-light">O Meu Histórico de Encomendas</h2>
+
+    {% if pedidos %}
+        <div class="accordion" id="accordionPedidos">
+            {% for pedido in pedidos %}
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading{{ pedido.id }}">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ pedido.id }}">
+                        <div class="d-flex w-100 justify-content-between pe-3 align-items-center">
+                            <span>
+                                <strong>Pedido #{{ pedido.id }}</strong> 
+                                <span class="text-muted ms-2" style="font-size: 0.9em;">{{ pedido.data_pedido|date:"d/m/Y" }}</span>
+                            </span>
+                            
+                            <div>
+                                {% if pedido.status == 'Entregue' %}
+                                    <span class="badge bg-success me-3">Entregue</span>
+                                {% elif pedido.status == 'Enviado' %}
+                                    <span class="badge bg-primary me-3">Enviado</span>
+                                {% else %}
+                                    <span class="badge bg-warning text-dark me-3">{{ pedido.status }}</span>
+                                {% endif %}
+                                
+                                <span class="fw-bold">€ {{ pedido.total_pago }}</span>
+                            </div>
+                        </div>
+                    </button>
+                </h2>
+                <div id="collapse{{ pedido.id }}" class="accordion-collapse collapse" data-bs-parent="#accordionPedidos">
+                    <div class="accordion-body">
+                        <p><strong>Morada de Envio:</strong> {{ pedido.endereco }}, {{ pedido.codigo_postal }} {{ pedido.cidade }}</p>
+                        <hr>
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Produto</th>
+                                    <th class="text-center">Qtd</th>
+                                    <th class="text-end">Preço Unit.</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in pedido.itens.all %}
+                                <tr>
+                                    <td>{{ item.produto.nome }}</td>
+                                    <td class="text-center">{{ item.quantidade }}</td>
+                                    <td class="text-end">€ {{ item.preco }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <div class="text-end text-muted" style="font-size: 0.9em;">
+                            Portes: € {{ pedido.custo_envio }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-light text-center py-5 border" role="alert">
+            <h4>Ainda não fez nenhuma encomenda.</h4>
+            <a href="{% url 'home' %}" class="btn btn-dark mt-3">Começar a Comprar</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

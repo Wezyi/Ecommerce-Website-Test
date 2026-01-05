@@ -1,0 +1,206 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    /* CSS DO VÍDEO */
+    .video-hero {
+        position: relative;
+        height: 80vh; 
+        min-height: 500px;
+        width: 100%;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #000;
+    }
+
+    .bg-video {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        min-width: 100%;
+        min-height: 100%;
+        width: auto;
+        height: auto;
+        z-index: 0;
+        transform: translateX(-50%) translateY(-50%);
+        object-fit: cover;
+        opacity: 0.6; 
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        color: white;
+    }
+
+    .hero-title {
+        font-size: 4rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+
+    /* CSS DO BOTÃO DE SOM */
+    .btn-sound {
+        position: absolute;
+        bottom: 30px;
+        right: 30px;
+        z-index: 2;
+        background-color: rgba(255, 255, 255, 0.2);
+        border: 1px solid white;
+        color: white;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: 0.3s;
+        font-size: 1.2rem;
+    }
+
+    .btn-sound:hover {
+        background-color: white;
+        color: black;
+    }
+</style>
+
+{% if produtos.number == 1 %}
+<div class="video-hero mb-5">
+    <video autoplay muted loop playsinline class="bg-video" id="meuVideo">
+        <source src="{% static 'videos/banner.mp4' %}" type="video/mp4">
+        O seu navegador não suporta vídeos HTML5.
+    </video>
+
+    <div class="hero-content container">
+        <h1 class="hero-title">Estilo Sem Limites</h1>
+        <p class="hero-subtitle fs-4">Descobre a nova coleção para este inverno.</p>
+        <a href="#produtos" class="btn btn-light btn-lg fw-bold px-5 rounded-pill mt-3">Ver Coleção</a>
+    </div>
+
+    <button class="btn-sound" id="btnSound" title="Ligar/Desligar Som">🔇</button>
+</div>
+
+<script>
+    const video = document.getElementById('meuVideo');
+    const btn = document.getElementById('btnSound');
+
+    // Verifica se os elementos existem antes de adicionar o evento
+    if (btn && video) {
+        btn.addEventListener('click', function() {
+            if (video.muted) {
+                video.muted = false; // Liga o som
+                btn.innerHTML = '🔊'; 
+            } else {
+                video.muted = true; // Desliga o som
+                btn.innerHTML = '🔇'; 
+            }
+        });
+    }
+</script>
+{% endif %}
+
+
+<div class="container mb-5" id="produtos">
+    
+    {% if produtos.number == 1 %}
+        <h2 class="text-center my-5 text-uppercase fw-light">PRODUTOS EM DESTAQUE</h2>
+    {% else %}
+        <h2 class="text-center my-5 text-uppercase fw-light">MAIS PRODUTOS (Página {{ produtos.number }})</h2>
+    {% endif %}
+    
+    <div class="row">
+        {% for produto in produtos %}
+        <div class="col-lg-3 col-md-4 mb-4">
+            
+            {% if produto.stock > 0 %}
+            <a href="{% url 'detalhe_produto' produto.id %}" class="card h-100 text-decoration-none border-0 shadow-sm">
+            {% else %}
+            <div class="card h-100 border-0 shadow-sm" style="opacity: 0.6; cursor: not-allowed;">
+            {% endif %}
+
+                <div class="card-img-top d-flex align-items-center justify-content-center text-secondary position-relative">
+                    
+                    {% if produto.stock == 0 %}
+                        <div class="position-absolute top-50 start-50 translate-middle bg-danger text-white px-3 py-1 rounded fw-bold shadow" style="z-index: 10; letter-spacing: 1px;">
+                            ESGOTADO
+                        </div>
+                    {% endif %}
+
+                    {% if produto.imagem %}
+                        <img src="{{ produto.imagem.url }}" class="card-img-top" alt="{{ produto.nome }}" style="height: 250px; object-fit: contain; padding: 10px; {% if produto.stock == 0 %}filter: grayscale(100%);{% endif %}">
+                    {% else %}
+                        <div class="d-flex align-items-center justify-content-center bg-light" style="height: 250px; width: 100%;">
+                            <span>Sem Imagem</span>
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="card-body text-center p-2">
+                    <p class="card-text text-muted mb-1 small">
+                        {{ produto.descricao|truncatewords:2 }}
+                    </p>
+                    <h6 class="card-title text-dark fw-normal mb-1">{{ produto.nome }}</h6>
+                    <span class="h6 mb-0 text-dark fw-bold">€ {{ produto.preco|floatformat:2 }}</span>
+                </div>
+            
+            {% if produto.stock > 0 %}
+            </a>
+            {% else %}
+            </div>
+            {% endif %}
+
+        </div>
+        {% endfor %}
+    </div>
+
+    {% if produtos.paginator.num_pages > 1 %}
+    <nav aria-label="Navegação de páginas" class="mt-5">
+        <ul class="pagination justify-content-center">
+            
+            {% if produtos.has_previous %}
+                <li class="page-item">
+                    <a class="page-link text-dark" href="?page={{ produtos.previous_page_number }}">Anterior</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link text-muted">Anterior</span>
+                </li>
+            {% endif %}
+
+            {% for num in produtos.paginator.page_range %}
+                {% if produtos.number == num %}
+                    <li class="page-item active">
+                        <span class="page-link bg-dark border-dark">{{ num }}</span>
+                    </li>
+                {% else %}
+                    <li class="page-item">
+                        <a class="page-link text-dark" href="?page={{ num }}">{{ num }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+
+            {% if produtos.has_next %}
+                <li class="page-item">
+                    <a class="page-link text-dark" href="?page={{ produtos.next_page_number }}">Próxima</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link text-muted">Próxima</span>
+                </li>
+            {% endif %}
+            
+        </ul>
+    </nav>
+    {% endif %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            {% if produto.imagem %}
+                <img src="{{ produto.imagem.url }}" class="img-fluid rounded shadow" alt="{{ produto.nome }}">
+            {% else %}
+                <div class="bg-light d-flex align-items-center justify-content-center text-secondary" style="height: 400px; width: 100%;">
+                    <span>Sem Imagem</span>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="col-md-6">
+            <h1 class="fw-bold">{{ produto.nome }}</h1>
+            <h2 class="text-success my-3">€ {{ produto.preco }}</h2>
+            
+            
+            {% if produto.tamanho %}
+                <p class="badge bg-secondary fs-6">Tamanho: {{ produto.tamanho }}</p>
+            {% endif %}
+
+            <p class="lead mt-3">{{ produto.descricao }}</p>
+            <div class="mb-3">
+    <span class="text-warning fs-5">★ {{ media_estrelas }}/5</span>
+    <span class="text-muted small">({{ avaliacoes.count }} avaliações)</span>
+</div>
+
+            <hr>
+
+            <div class="d-grid gap-2">
+                {% if produto.stock > 0 %}
+                    <a href="{% url 'adicionar_ao_carrinho' produto.id %}" class="btn btn-dark btn-lg">Adicionar ao Carrinho</a>
+                {% else %}
+                    <button class="btn btn-secondary btn-lg" disabled>Produto Esgotado</button>
+                {% endif %}
+                
+                <a href="{% url 'home' %}" class="btn btn-outline-secondary">Voltar para a Loja</a>
+            </div>
+        </div>
+    </div>
+    <hr class="my-5">
+
+<div class="row">
+    <div class="col-md-5 mb-4">
+        <h4 class="mb-3">Deixa a tua opinião</h4>
+        
+        {% if user.is_authenticated %}
+            <div class="card p-4 shadow-sm">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Classificação</label>
+                        {{ form.estrelas }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">O teu comentário</label>
+                        {{ form.comentario }}
+                    </div>
+                    <button type="submit" class="btn btn-dark w-100">Publicar Avaliação</button>
+                </form>
+            </div>
+        {% else %}
+            <div class="alert alert-light border text-center">
+                <p>Precisas de ter conta para avaliar.</p>
+                <a href="{% url 'login' %}" class="btn btn-outline-dark btn-sm">Fazer Login</a>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="col-md-7">
+        <h4 class="mb-3">Comentários Recentes</h4>
+        
+        {% if not avaliacoes %}
+            <p class="text-muted">Ainda não há avaliações. Sê o primeiro!</p>
+        {% else %}
+            {% for av in avaliacoes %}
+            <div class="card mb-3 border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h6 class="fw-bold">{{ av.usuario.username }}</h6>
+                        <small class="text-muted">{{ av.data_criacao|date:"d M Y" }}</small>
+                    </div>
+                    
+                    <div class="text-warning mb-2">
+                        {% if av.estrelas == 1 %}★☆☆☆☆{% endif %}
+                        {% if av.estrelas == 2 %}★★☆☆☆{% endif %}
+                        {% if av.estrelas == 3 %}★★★☆☆{% endif %}
+                        {% if av.estrelas == 4 %}★★★★☆{% endif %}
+                        {% if av.estrelas == 5 %}★★★★★{% endif %}
+                    </div>
+                    
+                    <p class="card-text text-secondary">{{ av.comentario }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+</div>
+
+{% endblock %}

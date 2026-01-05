@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5 text-center">
+    {% if status == 'sucesso' %}
+        <h1 class="text-success">🎉 Pagamento Concluído!</h1>
+        <p class="lead">Obrigado pela sua encomenda. Receberá um email de confirmação em breve.</p>
+        <a href="{% url 'home' %}" class="btn btn-primary mt-3">Voltar à Loja</a>
+    {% else %}
+        <h1 class="text-danger">❌ Pagamento Cancelado</h1>
+        <p class="lead">Ocorreu um erro ou a transação foi cancelada.</p>
+        <a href="{% url 'ver_carrinho' %}" class="btn btn-warning mt-3">Rever Carrinho</a>
+    {% endif %}
+</div>
+{% endblock %}

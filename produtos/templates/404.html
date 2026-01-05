@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="d-flex align-items-center justify-content-center vh-100 bg-light">
+    <div class="text-center">
+        <h1 class="display-1 fw-bold text-dark">404</h1>
+        <p class="fs-3"> <span class="text-danger">Opps!</span> Página não encontrada.</p>
+        <p class="lead">
+            A página que procuras não existe ou o produto já foi removido.
+        </p>
+        <a href="{% url 'home' %}" class="btn btn-dark btn-lg rounded-pill mt-3">Voltar à Loja</a>
+    </div>
+</div>
+{% endblock %}
