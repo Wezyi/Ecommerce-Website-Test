@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'produtos',
     'contas',
     'core',
+    'cloudinary_storage', 
+    'cloudinary',
     
 ]
 
@@ -171,3 +173,11 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'dqoo3xep7', 
+    'API_KEY': '925812566431815', 
+    'API_SECRET': 'V7EEMR1lMa32cacTmyTtPWzECgo',
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
