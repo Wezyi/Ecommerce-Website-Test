@@ -12,4 +12,4 @@ python manage.py collectstatic --no-input
 python manage.py migrate
 
 # 4. CRIAR O ADMIN AUTOMATICAMENTE (LINHA NOVA)
-python setup/criar_admin.py
+python criar_admin.py
