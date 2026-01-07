@@ -114,17 +114,19 @@ CLOUDINARY_STORAGE = {
 }
 
 STORAGES = {
-    # Gestão das Imagens (Media) -> Vai para o Cloudinary
     "default": {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
-    # Gestão do CSS/JS (Static) -> Continua com o WhiteNoise
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        # Mudámos para "CompressedStaticFilesStorage" (sem o Manifest) para evitar o erro de ficheiro em falta
+        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
     },
 }
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Fallback para ferramentas antigas
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+# Atualizado aqui também para não dar erro
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 # --- OUTRAS CONFIGURAÇÕES ---
 
