@@ -140,7 +140,7 @@ STATICFILES_DIRS = [
 ]
 
 # Compressão e cache para o CSS ficar rápido
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -180,8 +180,17 @@ CLOUDINARY_STORAGE = {
     'API_SECRET': os.environ.get('API_SECRET'),
 }
 
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
+STORAGES = {
+    # Gestão das Imagens (Media) -> Vai para o Cloudinary
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+    },
+    # Gestão do CSS/JS (Static) -> Continua com o WhiteNoise
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 print("--- DEBUG CLOUDINARY ---", file=sys.stderr)
 print(f"Cloud Name existe? {'Sim' if os.environ.get('CLOUD_NAME') else 'NÃO'}", file=sys.stderr)
