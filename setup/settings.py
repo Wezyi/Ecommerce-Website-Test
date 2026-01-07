@@ -14,7 +14,7 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 import dj_database_url
-
+import sys
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -181,3 +181,9 @@ CLOUDINARY_STORAGE = {
 }
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+
+print("--- DEBUG CLOUDINARY ---", file=sys.stderr)
+print(f"Cloud Name existe? {'Sim' if os.environ.get('CLOUD_NAME') else 'NÃO'}", file=sys.stderr)
+print(f"Storage definido: {DEFAULT_FILE_STORAGE}", file=sys.stderr)
+print("------------------------", file=sys.stderr)
