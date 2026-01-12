@@ -104,7 +104,9 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
-# --- CONFIGURAÇÃO FINAL E SEGURA ---
+# ==============================================================================
+# CONFIGURAÇÃO CRÍTICA DE FICHEIROS E IMAGENS
+# ==============================================================================
 
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
@@ -119,17 +121,17 @@ CLOUDINARY_STORAGE = {
     'API_SECRET': os.environ.get('API_SECRET'),
 }
 
+# 1. Configuração Moderna (Para o Django 5 funcionar)
 STORAGES = {
-    # Imagens -> Cloudinary
     "default": {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
-    # Estáticos -> Django Padrão (Nunca falha no deploy)
     "staticfiles": {
         "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
     },
 }
 
-# Compatibilidade
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+# 2. Configuração Antiga (Para a biblioteca Cloudinary NÃO dar erro)
+# Estas duas linhas são OBRIGATÓRIAS para corrigir o erro que você viu.
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
