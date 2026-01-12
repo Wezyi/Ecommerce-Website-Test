@@ -104,9 +104,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
-# ==============================================================================
-# CONFIGURAÇÃO CRÍTICA DE FICHEIROS E IMAGENS
-# ==============================================================================
+# --- CONFIGURAÇÃO FINAL E SEGURA ---
 
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
@@ -121,19 +119,17 @@ CLOUDINARY_STORAGE = {
     'API_SECRET': os.environ.get('API_SECRET'),
 }
 
-# --- A MUDANÇA ESTÁ AQUI ---
-# Usamos "CompressedStaticFilesStorage".
-# Ele comprime os ficheiros (bom para vídeo) mas não exige perfeição (bom para deploy).
-
 STORAGES = {
+    # Imagens -> Cloudinary
     "default": {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
+    # Estáticos -> Django Padrão (Nunca falha no deploy)
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
     },
 }
 
-# Compatibilidade para evitar erros antigos
+# Compatibilidade
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
