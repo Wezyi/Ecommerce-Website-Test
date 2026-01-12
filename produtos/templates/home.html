@@ -74,7 +74,7 @@
 
 {% if produtos.number == 1 %}
 <div class="video-hero mb-5">
-    <video autoplay loop muted playsinline id="meuVideo">
+    <video autoplay loop muted playsinline id="meuVideo" class="bg-video">
         <source src="https://res.cloudinary.com/dqoo3xep7/video/upload/v1768177052/banner_btlsr6.mp4" type="video/mp4">
     </video>
 
@@ -91,14 +91,13 @@
     const video = document.getElementById('meuVideo');
     const btn = document.getElementById('btnSound');
 
-    // Verifica se os elementos existem antes de adicionar o evento
     if (btn && video) {
         btn.addEventListener('click', function() {
             if (video.muted) {
-                video.muted = false; // Liga o som
+                video.muted = false;
                 btn.innerHTML = '🔊'; 
             } else {
-                video.muted = true; // Desliga o som
+                video.muted = true;
                 btn.innerHTML = '🔇'; 
             }
         });
