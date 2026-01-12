@@ -108,7 +108,6 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 # CONFIGURAÇÃO CRÍTICA DE FICHEIROS E IMAGENS
 # ==============================================================================
 
-# 1. Configuração de Pastas
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
@@ -116,28 +115,25 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# 2. Configuração do Cloudinary (Imagens)
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.environ.get('CLOUD_NAME'),
     'API_KEY': os.environ.get('API_KEY'),
     'API_SECRET': os.environ.get('API_SECRET'),
 }
 
-# 3. O SEGREDO PARA O DEPLOY NÃO FALHAR
-# Isto diz ao WhiteNoise para não dar erro se faltar um ficheirozinho qualquer
-WHITENOISE_MANIFEST_STRICT = False
+# --- A MUDANÇA ESTÁ AQUI ---
+# Usamos "CompressedStaticFilesStorage".
+# Ele comprime os ficheiros (bom para vídeo) mas não exige perfeição (bom para deploy).
 
-# 4. Definição de Storages (Django 5)
 STORAGES = {
     "default": {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
     "staticfiles": {
-        # Usamos o Manifest (melhor para vídeos e cache) mas com a regra Strict=False acima
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
     },
 }
 
-# 5. Compatibilidade (Django Antigo / Bibliotecas)
+# Compatibilidade para evitar erros antigos
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
