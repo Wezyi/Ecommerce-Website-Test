@@ -5,9 +5,9 @@
 
 <div class="bg-light py-5 mb-5">
     <div class="container text-center">
-        <h1 class="display-4 fw-bold text-uppercase">A Nossa História</h1>
+        <h1 class="display-4 fw-bold text-uppercase">A Minha Jornada</h1>
         <p class="lead text-muted mx-auto" style="max-width: 600px;">
-            Mais do que uma loja, somos uma marca dedicada a trazer o melhor estilo para o teu dia a dia.
+            Este projeto é o reflexo da minha evolução como developer Python e Django.
         </p>
     </div>
 </div>
@@ -16,25 +16,28 @@
 
     <div class="row align-items-center mb-5">
         <div class="col-md-6 mb-4 mb-md-0">
-            <div class="bg-dark text-white d-flex align-items-center justify-content-center rounded shadow-sm" style="height: 400px;">
-                <h4 class="text-white-50">FOTO DA EQUIPA OU ESCRITÓRIO</h4>
-            </div>
-            </div>
+            <img src="{% static 'img/perfil.jpg' %}" 
+                 onerror="this.src='https://via.placeholder.com/600x400?text=Foto+do+Wilson'" 
+                 alt="Foto de Wilson Gonçalves" 
+                 class="img-fluid rounded shadow-sm w-100" 
+                 style="object-fit: cover; height: 400px;">
+        </div>
+        
         <div class="col-md-6">
-            <h3 class="fw-bold mb-3">Quem Somos?</h3>
+            <h3 class="fw-bold mb-3">Quem Sou Eu?</h3>
             <p class="text-secondary">
-                Fundada em 2024, a <strong>Xtreme Style</strong> nasceu com uma missão simples: proporcionar produtos de alta qualidade com um serviço de excelência. Começámos como uma pequena startup numa garagem e hoje enviamos para todo o país.
+                Olá! O meu nome é <strong>Wilson Gonçalves</strong>. Este site que estás a ver não é apenas uma página web, é o resultado prático dos meus estudos em programação.
             </p>
             <p class="text-secondary">
-                Acreditamos que o comércio online deve ser fácil, seguro e transparente. Selecionamos cada produto rigorosamente para garantir que recebes apenas o melhor.
+                Decidi mergulhar no mundo do desenvolvimento web utilizando <strong>Python e Django</strong>. O meu objetivo é criar soluções digitais que sejam funcionais, seguras e que resolvam problemas reais.
             </p>
             <p class="text-secondary">
-                A nossa equipa trabalha todos os dias para melhorar a tua experiência de compra. Obrigado por fazeres parte da nossa jornada!
+                Estou constantemente a aprender e a testar novas funcionalidades. Este projeto no Render serve como o meu "laboratório" onde aplico tudo o que aprendo.
             </p>
             
             <div class="mt-4">
-                <h5 class="fw-bold mb-0">João Silva</h5>
-                <small class="text-muted">Fundador & CEO</small>
+                <h5 class="fw-bold mb-0">Wilson Gonçalves</h5>
+                <small class="text-muted">Python Developer em Formação</small>
             </div>
         </div>
     </div>
@@ -44,29 +47,31 @@
     <div class="row text-center">
         <div class="col-md-4 mb-4">
             <div class="p-4 border rounded shadow-sm h-100">
-                <div class="display-4 mb-3">🚀</div> <h5 class="fw-bold">Envio Rápido</h5>
-                <p class="text-muted small">Processamos a tua encomenda em 24 horas para que chegue até ti o mais rápido possível.</p>
+                <div class="display-4 mb-3">🐍</div> 
+                <h5 class="fw-bold">Python & Django</h5>
+                <p class="text-muted small">Foco total no backend, utilizando a robustez do Python e a rapidez do framework Django para criar a lógica do site.</p>
             </div>
         </div>
         <div class="col-md-4 mb-4">
             <div class="p-4 border rounded shadow-sm h-100">
-                <div class="display-4 mb-3">💎</div>
-                <h5 class="fw-bold">Qualidade Garantida</h5>
-                <p class="text-muted small">Todos os nossos produtos passam por um controlo de qualidade rigoroso antes de serem enviados.</p>
+                <div class="display-4 mb-3">🚀</div>
+                <h5 class="fw-bold">Projetos Reais</h5>
+                <p class="text-muted small">Acredito na aprendizagem prática (Learn by doing). Cada linha de código aqui tem o propósito de consolidar conhecimentos.</p>
             </div>
         </div>
         <div class="col-md-4 mb-4">
             <div class="p-4 border rounded shadow-sm h-100">
-                <div class="display-4 mb-3">🛡️</div>
-                <h5 class="fw-bold">Compra Segura</h5>
-                <p class="text-muted small">Pagamentos processados com a máxima segurança (SSL) e proteção de dados garantida.</p>
+                <div class="display-4 mb-3">☁️</div>
+                <h5 class="fw-bold">Deploy & Cloud</h5>
+                <p class="text-muted small">Experiência em colocar aplicações em produção (como aqui no Render), lidando com configurações de servidor e bases de dados.</p>
             </div>
         </div>
     </div>
 
     <div class="text-center mt-5">
-        <h4 class="mb-3">Junta-te a nós!</h4>
-        <a href="{% url 'home' %}" class="btn btn-dark btn-lg px-5 rounded-pill">Ver Produtos</a>
+        <h4 class="mb-3">Gostaste do projeto?</h4>
+        <p class="text-muted">Continua a navegar para ver as funcionalidades que implementei.</p>
+        <a href="{% url 'home' %}" class="btn btn-dark btn-lg px-5 rounded-pill">Voltar ao Início</a>
     </div>
 
 </div>
